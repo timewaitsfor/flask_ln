@@ -1,10 +1,12 @@
+# data_presentation.py
+
 from flask_sqlalchemy import SQLAlchemy
-import os
+from flask import Flask
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:ZAQ12wssd@10.96.130.69:3306/tt_data?charset=utf8'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:ZAQ12wssd@10.96.130.69:3306/tt_data?charset=utf8'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # TT_YWData_Session = sessionmaker(bind=tt_ywdata_engine)
 # TT_YWData_Base = declarative_base(tt_ywdata_engine)
@@ -17,7 +19,7 @@ class Config(object):
     user = 'root'
     password = 'ZAQ12wssd'
     database = 'tt_data'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://%s:%s@127.0.0.1:3306/%s' % (user,password,database)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://%s:%s@10.96.130.69:3306/%s' % (user,password,database)
 
     # 设置sqlalchemy自动更跟踪数据库
     SQLALCHEMY_TRACK_MODIFICATIONS = True
@@ -48,4 +50,19 @@ class tt_ywdata_author_analysed(db.Model):
     from_src = db.Column(db.String(128))
     score = db.Column(db.Integer)
 
-res = tt_ywdata_author_analysed.query.filter_by(author='wang').all()
+res = tt_ywdata_author_analysed.query.filter_by(author='.alice366').all()
+for r in res:
+    tt_number = r.tt_number
+
+print(tt_number)
+
+# with app.app_context():
+#     with db.engine.connect() as conn:
+#         rs = conn.execute("select 1")
+#         print(rs.fetchone())
+
+
+
+@app.route('/')
+def hello_world():
+    return str(tt_number)
