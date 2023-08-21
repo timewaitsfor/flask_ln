@@ -1,9 +1,11 @@
 #coding=utf-8
 import inspect
 import time
-import urllib, urllib2
+import urllib
 import json
 import socket
+import requests
+
 class mon:
     def __init__(self):
         self.data = {}
@@ -54,15 +56,13 @@ if __name__ == "__main__":
     while True:
         m = mon()
         data = m.runAllGet()
-        print data
-        req = urllib2.Request("http://test.361way.com:8888", json.dumps(data), {'Content-Type': 'application/json'})
+        print(data)
+        # req = urllib2.Request("http://test.361way.com:8888", json.dumps(data), {'Content-Type': 'application/json'})
+
+        req = requests.post("http://10.96.130.66:9098/predict", json=json.dumps(data))
+
         f = urllib2.urlopen(req)
         response = f.read()
-        print response
+        print(req)
         f.close()
         time.sleep(1)
-
-作者：patrick
-链接：https://juejin.cn/post/7094822608897589284
-来源：稀土掘金
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
